@@ -3,9 +3,8 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Books from "./pages/Books";
-import Subjects from "./pages/Subjects";
 import BookDetails from "./pages/BookDetails";
-
+import Subjects from "./pages/Subjects";
 
 export default function App() {
   return (
@@ -16,10 +15,9 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/books" element={<Books />} />
-          <Route path="/subjects" element={<Subjects />} />
           <Route path="/book/:id" element={<BookDetails />} />
+          <Route path="/subjects" element={<Subjects />} />
           <Route path="*" element={<Navigate to="/" />} />
-
         </Routes>
       </main>
 

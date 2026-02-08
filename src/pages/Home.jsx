@@ -1,16 +1,26 @@
+import { Link } from "react-router-dom";
+
 export default function Home() {
   return (
     <section className="home">
-      <div className="home-content">
-        <h1>Welcome to Book Library</h1>
+      <div className="home-inner">
+        <h1>
+          Discover Your Next <span>Favorite Book</span>
+        </h1>
+
         <p>
-          Search books, explore subjects, and discover knowledge
-          from Open Library.
+          Explore thousands of books by title, author, or subject using
+          the Open Library API. Simple, fast, and beautifully designed.
         </p>
 
-        <div className="home-buttons">
-          <a href="/books" className="btn primary">Browse Books</a>
-          <a href="/subjects" className="btn secondary">Explore Subjects</a>
+        <div className="home-actions">
+          <Link to="/books" className="btn primary">
+            Browse Books
+          </Link>
+
+          <Link to="/subjects" className="btn secondary">
+            Browse by Subject
+          </Link>
         </div>
       </div>
     </section>

@@ -1,15 +1,38 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { useState } from "react";
 
 export default function Navbar() {
-  return (
-    <nav className="navbar">
-      <h2 className="logo">Book Library</h2>
+  const [open, setOpen] = useState(false);
 
-      <ul className="nav-links">
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/books">Books</Link></li>
-        <li><Link to="/subjects">Subjects</Link></li>
-      </ul>
-    </nav>
+  return (
+    <header className="navbar">
+      <div className="nav-container">
+        {/* Logo */}
+        <NavLink to="/" className="nav-logo">
+          📚 <span>Book</span>Library
+        </NavLink>
+
+        {/* Mobile toggle */}
+        <button
+          className="nav-toggle"
+          onClick={() => setOpen(!open)}
+        >
+          ☰
+        </button>
+
+        {/* Menu */}
+        <nav className={`nav-menu ${open ? "open" : ""}`}>
+          <NavLink to="/" end onClick={() => setOpen(false)}>
+            Home
+          </NavLink>
+          <NavLink to="/books" onClick={() => setOpen(false)}>
+            Books
+          </NavLink>
+          <NavLink to="/subjects" onClick={() => setOpen(false)}>
+            Subjects
+          </NavLink>
+        </nav>
+      </div>
+    </header>
   );
 }

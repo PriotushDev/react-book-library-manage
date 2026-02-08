@@ -1,24 +1,21 @@
 const BASE_URL = "https://openlibrary.org";
 
 /* SEARCH BOOKS */
-export async function searchBooks({ title, author, subject }) {
+export async function searchBooks({ title, author, subject, page = 1 }) {
   try {
-    let url = `${BASE_URL}/search.json?limit=10`;
+    let url = `${BASE_URL}/search.json?limit=10&page=${page}`;
 
     if (title) url += `&title=${title}`;
     if (author) url += `&author=${author}`;
     if (subject) url += `&subject=${subject}`;
 
-    const response = await fetch(url);
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("Search failed");
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch books");
-    }
-
-    const data = await response.json();
+    const data = await res.json();
     return data.docs;
-  } catch (error) {
-    console.error("Search books error:", error);
+  } catch (err) {
+    console.error(err);
     return [];
   }
 }
@@ -26,26 +23,20 @@ export async function searchBooks({ title, author, subject }) {
 /* BOOK DETAILS */
 export async function getBookDetails(workId) {
   try {
-    const response = await fetch(
-      `${BASE_URL}/works/${workId}.json`
-    );
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch book details");
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error("Book details error:", error);
+    const res = await fetch(`${BASE_URL}/works/${workId}.json`);
+    if (!res.ok) throw new Error("Details failed");
+    return await res.json();
+  } catch (err) {
+    console.error(err);
     return null;
   }
 }
 
-/* BOOKS BY SUBJECT */
-export async function getBooksBySubject(subject) {
+/* SUBJECT BOOKS */
+export async function getBooksBySubject(subject, limit = 12) {
   try {
     const response = await fetch(
-      `https://openlibrary.org/subjects/${subject}.json?limit=12`
+      `https://openlibrary.org/subjects/${subject}.json?limit=${limit}`
     );
 
     if (!response.ok) {

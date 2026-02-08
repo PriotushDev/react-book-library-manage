@@ -1,47 +1,32 @@
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
 import { getBookDetails } from "../api/openLibrary";
 
 export default function BookDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const list = location.state?.list || [];
 
   const [book, setBook] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
 
   useEffect(() => {
-    async function loadBook() {
-      const data = await getBookDetails(id);
-
-      if (!data) {
-        setError("Failed to load book details.");
-      } else {
-        setBook(data);
-      }
-
-      setLoading(false);
-    }
-
-    loadBook();
+    getBookDetails(id).then(setBook);
   }, [id]);
 
-  if (loading) return <p>Loading book details...</p>;
+  if (!book) return <p>Loading book details...</p>;
 
-  if (error) {
-    return (
-      <section className="book-details">
-        <button className="back-btn" onClick={() => navigate(-1)}>
-          ← Back to Results
-        </button>
-        <p style={{ color: "red" }}>{error}</p>
-      </section>
-    );
-  }
-
-  const coverImage = book.covers
+  const cover = book.covers
     ? `https://covers.openlibrary.org/b/id/${book.covers[0]}-L.jpg`
     : null;
+
+  const currentIndex = list.indexOf(id);
+  const prevId = currentIndex > 0 ? list[currentIndex - 1] : null;
+  const nextId =
+    currentIndex >= 0 && currentIndex < list.length - 1
+      ? list[currentIndex + 1]
+      : null;
 
   return (
     <section className="book-details">
@@ -51,10 +36,10 @@ export default function BookDetails() {
 
       <div className="details-card">
         <div className="details-cover">
-          {coverImage ? (
-            <img src={coverImage} alt={book.title} />
+          {cover ? (
+            <img src={cover} alt={book.title} />
           ) : (
-            "📕"
+            <div className="no-cover">No Cover</div>
           )}
         </div>
 
@@ -82,6 +67,31 @@ export default function BookDetails() {
               : "N/A"}
           </p>
         </div>
+      </div>
+
+      {/* 🔽 PREV / NEXT (REAL) */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginTop: "30px",
+        }}
+      >
+        <button
+          className="btn secondary"
+          disabled={!prevId}
+          onClick={() => navigate(`/book/${prevId}`, { state: { list } })}
+        >
+          ← Previous
+        </button>
+
+        <button
+          className="btn primary"
+          disabled={!nextId}
+          onClick={() => navigate(`/book/${nextId}`, { state: { list } })}
+        >
+          Next →
+        </button>
       </div>
     </section>
   );
