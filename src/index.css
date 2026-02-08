@@ -229,3 +229,21 @@ body {
   color: inherit;
 }
 
+
+/* Search Box */
+.search-box {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.search-box input,
+.search-box select {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  min-width: 180px;
+}
+
+
