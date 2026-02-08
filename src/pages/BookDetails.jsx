@@ -1,7 +1,47 @@
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { getBookDetails } from "../api/openLibrary";
 
 export default function BookDetails() {
+  const { id } = useParams();
   const navigate = useNavigate();
+
+  const [book, setBook] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    async function loadBook() {
+      const data = await getBookDetails(id);
+
+      if (!data) {
+        setError("Failed to load book details.");
+      } else {
+        setBook(data);
+      }
+
+      setLoading(false);
+    }
+
+    loadBook();
+  }, [id]);
+
+  if (loading) return <p>Loading book details...</p>;
+
+  if (error) {
+    return (
+      <section className="book-details">
+        <button className="back-btn" onClick={() => navigate(-1)}>
+          ← Back to Results
+        </button>
+        <p style={{ color: "red" }}>{error}</p>
+      </section>
+    );
+  }
+
+  const coverImage = book.covers
+    ? `https://covers.openlibrary.org/b/id/${book.covers[0]}-L.jpg`
+    : null;
 
   return (
     <section className="book-details">
@@ -10,15 +50,37 @@ export default function BookDetails() {
       </button>
 
       <div className="details-card">
-        <div className="details-cover">📕</div>
+        <div className="details-cover">
+          {coverImage ? (
+            <img src={coverImage} alt={book.title} />
+          ) : (
+            "📕"
+          )}
+        </div>
 
         <div className="details-info">
-          <h2>Learning React</h2>
-          <p><strong>Author:</strong> Alex Banks</p>
-          <p><strong>First Publish Year:</strong> 2022</p>
-          <p><strong>Pages:</strong> 350</p>
-          <p><strong>Publisher:</strong> O'Reilly</p>
-          <p><strong>Subjects:</strong> Programming, React, JavaScript</p>
+          <h2>{book.title}</h2>
+
+          <p>
+            <strong>First publish:</strong>{" "}
+            {book.first_publish_date || "N/A"}
+          </p>
+
+          <p>
+            <strong>Description:</strong>{" "}
+            {book.description
+              ? typeof book.description === "string"
+                ? book.description
+                : book.description.value
+              : "No description available"}
+          </p>
+
+          <p>
+            <strong>Subjects:</strong>{" "}
+            {book.subjects
+              ? book.subjects.slice(0, 6).join(", ")
+              : "N/A"}
+          </p>
         </div>
       </div>
     </section>

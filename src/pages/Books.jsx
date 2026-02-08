@@ -73,9 +73,17 @@ export default function Books() {
             className="book-link"
           >
             <div className="book-card">
-              <div className="book-cover">
-                {book.cover_i ? "📘" : "📗"}
-              </div>
+                <div className="book-cover">
+                    <img
+                        src={
+                        book.cover_i
+                            ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`
+                            : "https://via.placeholder.com/150x220?text=No+Cover"
+                        }
+                        alt={book.title}
+                    />
+                </div>
+
               <h3>{book.title}</h3>
               <p>{book.author_name?.join(", ")}</p>
               <span>{book.first_publish_year}</span>

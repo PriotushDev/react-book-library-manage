@@ -247,3 +247,35 @@ body {
 }
 
 
+.details-cover img {
+  max-width: 220px;
+  border-radius: 8px;
+}
+
+
+/* Subjects */
+.subject-list {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.subject-btn {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.subject-btn.active,
+.subject-btn:hover {
+  background: #222;
+  color: #fff;
+  border-color: #222;
+}
+
+
+
