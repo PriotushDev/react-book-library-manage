@@ -4,6 +4,8 @@ import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Books from "./pages/Books";
 import Subjects from "./pages/Subjects";
+import BookDetails from "./pages/BookDetails";
+
 
 export default function App() {
   return (
@@ -15,7 +17,9 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/books" element={<Books />} />
           <Route path="/subjects" element={<Subjects />} />
+          <Route path="/book/:id" element={<BookDetails />} />
           <Route path="*" element={<Navigate to="/" />} />
+
         </Routes>
       </main>
 

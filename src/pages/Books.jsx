@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const dummyBooks = [
   {
     id: 1,
@@ -32,13 +34,18 @@ export default function Books() {
 
       <div className="books-grid">
         {dummyBooks.map((book) => (
-          <div className="book-card" key={book.id}>
-            <div className="book-cover">📘</div>
-
-            <h3>{book.title}</h3>
-            <p>{book.author}</p>
-            <span>{book.year}</span>
-          </div>
+          <Link
+            to={`/book/${book.id}`}
+            key={book.id}
+            className="book-link"
+          >
+            <div className="book-card">
+              <div className="book-cover">📘</div>
+              <h3>{book.title}</h3>
+              <p>{book.author}</p>
+              <span>{book.year}</span>
+            </div>
+          </Link>
         ))}
       </div>
     </section>

@@ -177,3 +177,55 @@ body {
   color: #999;
 }
 
+
+/* Book Details */
+.book-details {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: #222;
+  font-size: 14px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.details-card {
+  display: flex;
+  gap: 32px;
+  background: #fff;
+  padding: 24px;
+  border-radius: 10px;
+  border: 1px solid #eee;
+}
+
+.details-cover {
+  font-size: 80px;
+}
+
+.details-info h2 {
+  margin-bottom: 12px;
+  color: #222;
+}
+
+.details-info p {
+  margin-bottom: 6px;
+  color: #555;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .details-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
+.book-link {
+  text-decoration: none;
+  color: inherit;
+}
+
