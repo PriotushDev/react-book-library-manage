@@ -1,56 +1,26 @@
-import { Link } from "react-router-dom";
 import { useState } from "react";
-
-const dummyBooks = [
-  {
-    id: 1,
-    title: "Learning React",
-    author: "Alex Banks",
-    year: 2022,
-    subject: "programming",
-  },
-  {
-    id: 2,
-    title: "JavaScript Guide",
-    author: "MDN",
-    year: 2021,
-    subject: "programming",
-  },
-  {
-    id: 3,
-    title: "Clean Code",
-    author: "Robert C. Martin",
-    year: 2019,
-    subject: "software",
-  },
-  {
-    id: 4,
-    title: "You Don't Know JS",
-    author: "Kyle Simpson",
-    year: 2020,
-    subject: "programming",
-  },
-];
+import { Link } from "react-router-dom";
+import { searchBooks } from "../api/openLibrary";
 
 export default function Books() {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [subject, setSubject] = useState("");
+  const [books, setBooks] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const filteredBooks = dummyBooks.filter((book) => {
-    return (
-      (title === "" ||
-        book.title.toLowerCase().includes(title.toLowerCase())) &&
-      (author === "" ||
-        book.author.toLowerCase().includes(author.toLowerCase())) &&
-      (subject === "" || book.subject === subject)
-    );
-  });
+  async function handleSearch() {
+    setLoading(true);
+    const result = await searchBooks({ title, author, subject });
+    setBooks(result);
+    setLoading(false);
+  }
 
   function handleClear() {
     setTitle("");
     setAuthor("");
     setSubject("");
+    setBooks([]);
   }
 
   return (
@@ -79,28 +49,36 @@ export default function Books() {
         >
           <option value="">All Subjects</option>
           <option value="programming">Programming</option>
-          <option value="software">Software</option>
+          <option value="science">Science</option>
+          <option value="history">History</option>
         </select>
 
-        <button className="btn primary">Search</button>
+        <button className="btn primary" onClick={handleSearch}>
+          Search
+        </button>
+
         <button className="btn secondary" onClick={handleClear}>
           Clear
         </button>
       </div>
 
-      {/* Books Grid */}
+      {/* Result */}
+      {loading && <p>Loading books...</p>}
+
       <div className="books-grid">
-        {filteredBooks.map((book) => (
+        {books.map((book) => (
           <Link
-            to={`/book/${book.id}`}
-            key={book.id}
+            to={`/book/${book.key.split("/").pop()}`}
+            key={book.key}
             className="book-link"
           >
             <div className="book-card">
-              <div className="book-cover">📘</div>
+              <div className="book-cover">
+                {book.cover_i ? "📘" : "📗"}
+              </div>
               <h3>{book.title}</h3>
-              <p>{book.author}</p>
-              <span>{book.year}</span>
+              <p>{book.author_name?.join(", ")}</p>
+              <span>{book.first_publish_year}</span>
             </div>
           </Link>
         ))}
