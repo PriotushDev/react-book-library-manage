@@ -1,18 +1,9 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-
-function Home() {
-  return <h2>Home Page</h2>;
-}
-
-function Books() {
-  return <h2>Books Page</h2>;
-}
-
-function Subjects() {
-  return <h2>Subjects Page</h2>;
-}
+import Home from "./pages/Home";
+import Books from "./pages/Books";
+import Subjects from "./pages/Subjects";
 
 export default function App() {
   return (
