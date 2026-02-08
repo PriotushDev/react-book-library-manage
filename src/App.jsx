@@ -5,10 +5,13 @@ import Home from "./pages/Home";
 import Books from "./pages/Books";
 import BookDetails from "./pages/BookDetails";
 import Subjects from "./pages/Subjects";
+import ScrollProgress from "./components/ScrollProgress";
+
 
 export default function App() {
   return (
     <>
+      <ScrollProgress />
       <Navbar />
 
       <main className="main">
